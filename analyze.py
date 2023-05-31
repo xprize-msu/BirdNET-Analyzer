@@ -173,7 +173,7 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
 
             # Write result string to file
             out_string += rstring
-
+        print(out_string)
     # Save as file
     with open(path, "w", encoding="utf-8") as rfile:
         rfile.write(out_string)
