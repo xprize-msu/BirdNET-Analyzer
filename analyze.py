@@ -193,7 +193,7 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
                 out_csv_append = csv.writer(out_csv)
                 out_csv_append.writerow(['sampling_event_id',path,'audio_trap','NA',\
                 'MachineObservation','BirdNet','BirdNet'] + result_list)
-        # return
+        return
     # Save as file
     with open(path, "w", encoding="utf-8") as rfile:
         rfile.write(out_string)
@@ -271,7 +271,7 @@ def analyzeFile(item):
 
     # Status
     print(f"Analyzing {fpath}", flush=True)
-
+    chunks = getRawAudioFromFile(fpath)
     try:
         # Open audio file and split into 3-second chunks
         chunks = getRawAudioFromFile(fpath)
