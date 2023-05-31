@@ -159,7 +159,6 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
     else:
         # CSV output file
         FILE_PATH = Path(f'example/bird_audio_output-{current_process().name}.csv')
-        print(FILE_PATH)
         if not FILE_PATH.exists():
             with open(FILE_PATH, 'w', newline='') as out_csv:
                 out_csv_write = csv.writer(out_csv)
@@ -170,11 +169,6 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
                     "kingdom","phylum","class","order", "family","genus","species_epithet",\
                     "confidence_percent"])
 
-        # # header = "Start (s),End (s),Scientific name,Common name,Confidence\n"
-        # header = "Start (s),End (s),Scientific name,Common name,Confidence\n"
-        # # Write header
-        # out_string += header
-
         for timestamp in getSortedTimestamps(r):
             rstring = ""
             result_list = []
@@ -184,7 +178,6 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
                 if c[1] > cfg.MIN_CONFIDENCE and (not cfg.SPECIES_LIST or c[0] in cfg.SPECIES_LIST):
                     label = cfg.TRANSLATED_LABELS[cfg.LABELS.index(c[0])]
                     # rstring += "{},{},{},{},{:.4f}\n".format(start, end, label.split("_", 1)[0], label.split("_", 1)[-1], c[1])
-                    # rstring += "{},{},{},{},{:.4f}\n".format(start, end, label.split("_", 1)[0], c[1])
                     result_list = [start, end, 'NA','NA','NA','NA','NA','NA',label.split("_", 1)[0], c[1]]
         # Write result string to file
         # out_string += rstring
