@@ -169,7 +169,7 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
 
                 if c[1] > cfg.MIN_CONFIDENCE and (not cfg.SPECIES_LIST or c[0] in cfg.SPECIES_LIST):
                     label = cfg.TRANSLATED_LABELS[cfg.LABELS.index(c[0])]
-                    print(label)
+                    print(rstring)
                     rstring += "{},{},{},{},{:.4f}\n".format(start, end, label.split("_", 1)[0], label.split("_", 1)[-1], c[1])
 
             # Write result string to file
