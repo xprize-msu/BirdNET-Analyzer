@@ -158,8 +158,7 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
 
     else:
         # CSV output file
-        print(path)
-        FILE_PATH = Path(f'{path}/bird_audio_output-{current_process().name}.csv')
+        FILE_PATH = Path(f'example/bird_audio_output-{current_process().name}.csv')
         print(FILE_PATH)
         if not FILE_PATH.exists():
             with open(FILE_PATH, 'w', newline='') as out_csv:
