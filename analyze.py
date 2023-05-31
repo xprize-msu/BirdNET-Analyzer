@@ -169,12 +169,11 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
 
                 if c[1] > cfg.MIN_CONFIDENCE and (not cfg.SPECIES_LIST or c[0] in cfg.SPECIES_LIST):
                     label = cfg.TRANSLATED_LABELS[cfg.LABELS.index(c[0])]
-                    print(rstring)
                     rstring += "{},{},{},{},{:.4f}\n".format(start, end, label.split("_", 1)[0], label.split("_", 1)[-1], c[1])
-
+            print(rstring)
             # Write result string to file
             out_string += rstring
-        print(out_string)
+        # print(out_string)
     # Save as file
     with open(path, "w", encoding="utf-8") as rfile:
         rfile.write(out_string)
