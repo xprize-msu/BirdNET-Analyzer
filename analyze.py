@@ -6,7 +6,7 @@ import json
 import operator
 import os
 import sys
-from multiprocessing import Pool, freeze_support
+from multiprocessing import Pool, freeze_support, current_process
 
 import numpy as np
 
@@ -15,7 +15,9 @@ import config as cfg
 import model
 import species
 import utils
-
+import logging
+from pathlib import Path
+import csv
 
 def loadCodes():
     """Loads the eBird codes.
@@ -156,25 +158,40 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
 
     else:
         # CSV output file
-        header = "Start (s),End (s),Scientific name,Common name,Confidence\n"
+        FILE_PATH = Path(f'{path}/bird_audio_output-{current_process().name}.csv')
+        if not FILE_PATH.exists():
+            with open(FILE_PATH, 'w', newline='') as out_csv:
+                out_csv_write = csv.writer(out_csv)
+                out_csv_write.writerow(
+                    ["sampling_event_id", "obs_file_path", "team","preparations","collection_method",\
+                    "identification_method","aiml_name",\
+                    "start(s)", "end(s)", \
+                    "kingdom","phylum","class","order", "family","genus","species_epithet",\
+                    "confidence_percent"])
 
-        # Write header
-        out_string += header
+        # # header = "Start (s),End (s),Scientific name,Common name,Confidence\n"
+        # header = "Start (s),End (s),Scientific name,Common name,Confidence\n"
+        # # Write header
+        # out_string += header
 
         for timestamp in getSortedTimestamps(r):
             rstring = ""
-
+            result_list = []
             for c in r[timestamp]:
                 start, end = timestamp.split("-", 1)
 
                 if c[1] > cfg.MIN_CONFIDENCE and (not cfg.SPECIES_LIST or c[0] in cfg.SPECIES_LIST):
                     label = cfg.TRANSLATED_LABELS[cfg.LABELS.index(c[0])]
-                    print(label)
-                    rstring += "{},{},{},{},{:.4f}\n".format(start, end, label.split("_", 1)[0], label.split("_", 1)[-1], c[1])
-            # print(rstring)
-            # Write result string to file
-            out_string += rstring
-        # print(out_string)
+                    # rstring += "{},{},{},{},{:.4f}\n".format(start, end, label.split("_", 1)[0], label.split("_", 1)[-1], c[1])
+                    # rstring += "{},{},{},{},{:.4f}\n".format(start, end, label.split("_", 1)[0], c[1])
+                    result_list = [start, end, 'NA','NA','NA','NA','NA','NA',label.split("_", 1)[0], c[1]]
+        # Write result string to file
+        # out_string += rstring
+            with open(FILE_PATH, 'a', newline='') as out_csv:
+                out_csv_append = csv.writer(out_csv)
+                out_csv_append.writerow(['sampling_event_id',path,'audio_trap','NA',\
+                'MachineObservation','BirdNet','BirdNet'] + result_list)
+        return
     # Save as file
     with open(path, "w", encoding="utf-8") as rfile:
         rfile.write(out_string)
