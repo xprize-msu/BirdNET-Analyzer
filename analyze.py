@@ -40,7 +40,7 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
         afile_path: The path to audio file.
     """
     # Make folder if it doesn't exist
-    if os.path.dirname(path):
+    if not os.path.isdir(os.path.dirname(path)):
         os.makedirs(os.path.dirname(path), exist_ok=True)
 
     # Selection table
@@ -156,13 +156,15 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
             # Write result string to file
             out_string += rstring
 
-    else:
+    else: # Custom CSV output
+
         # CSV output file
-        FILE_PATH = Path(f'example/bird_audio_output-{current_process().name}.csv')
-        if not FILE_PATH.exists():
-            with open(FILE_PATH, 'w', newline='') as out_csv:
-                out_csv_write = csv.writer(out_csv)
-                out_csv_write.writerow(
+        FILE_PATH = Path(f'{path}.{current_process().name}')
+        
+        # allow overwrites
+        with open(FILE_PATH, 'w', newline='') as out_csv:
+            out_csv_write = csv.writer(out_csv)
+            out_csv_write.writerow(
                     ["sampling_event_id", "obs_file_path", "team","preparations","collection_method",\
                     "identification_method","aiml_name",\
                     "start(s)", "end(s)", \
@@ -170,6 +172,8 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
                     "confidence_percent"])
 
         for timestamp in getSortedTimestamps(r):
+
+            # Filter results
             rstring = ""
             result_list = []
             for c in r[timestamp]:
@@ -177,15 +181,16 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
 
                 if c[1] > cfg.MIN_CONFIDENCE and (not cfg.SPECIES_LIST or c[0] in cfg.SPECIES_LIST):
                     label = cfg.TRANSLATED_LABELS[cfg.LABELS.index(c[0])]
-                    # rstring += "{},{},{},{},{:.4f}\n".format(start, end, label.split("_", 1)[0], label.split("_", 1)[-1], c[1])
                     result_list = [start, end, 'NA','NA','NA','NA','NA','NA',label.split("_", 1)[0], c[1]]
-        # Write result string to file
-        # out_string += rstring
+            
+            # Write result string to file
             with open(FILE_PATH, 'a', newline='') as out_csv:
                 out_csv_append = csv.writer(out_csv)
-                out_csv_append.writerow(['sampling_event_id',path,'audio_trap','NA',\
+                out_csv_append.writerow(['sampling_event_id',afile_path,'audio_trap','NA',\
                 'MachineObservation','BirdNet','BirdNet'] + result_list)
+
         return
+    
     # Save as file
     with open(path, "w", encoding="utf-8") as rfile:
         rfile.write(out_string)
