@@ -174,7 +174,7 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
                      "individual_count","organism_quantity","organism_quantity_type",
                      "references","notes",
                      "kingdom","phylum","class","order","family","genus","species","scientific_name",
-                     "taxon_rank","confidence_percent","start(s)", "end(s)",])
+                     "taxon_rank","confidence_percent","start_time_s", "end_time_s",])
 
         for timestamp in getSortedTimestamps(r):
 
