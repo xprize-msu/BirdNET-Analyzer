@@ -173,8 +173,8 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
                      "verificiation_method","verification_name","occurence_remarks",
                      "individual_count","organism_quantity","organism_quantity_type",
                      "references","notes",
-                     "kingdom","phylum","class","order","family","genus","species",
-                     "confidence_percent","start(s)", "end(s)",])
+                     "kingdom","phylum","class","order","family","genus","species","scientific_name",
+                     "taxon_rank","confidence_percent","start(s)", "end(s)",])
 
         for timestamp in getSortedTimestamps(r):
 
@@ -187,8 +187,8 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
                 if c[1] > cfg.MIN_CONFIDENCE and (not cfg.SPECIES_LIST or c[0] in cfg.SPECIES_LIST):
                     label = cfg.TRANSLATED_LABELS[cfg.LABELS.index(c[0])].split("_", 1)[0]
                     gen, spc = label.split(" ")
-                    result_list = ['Animalia','Chordata','Aves','NA','NA',gen, spc, 
-                                   c[1], start, end]
+                    result_list = ['Animalia','Chordata','Aves','NA','NA', gen, spc, label, 
+                                   'species', c[1], start, end]
             
             # Write result string to file
             with open(FILE_PATH, 'a', newline='') as out_csv:
