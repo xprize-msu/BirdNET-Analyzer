@@ -188,7 +188,7 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
                     label = cfg.TRANSLATED_LABELS[cfg.LABELS.index(c[0])].split("_", 1)[0]
                     gen, spc = label.split(" ")
                     result_list = ['Animalia','Chordata','Aves','NA','NA', gen, spc, label, 
-                                   'species', c[1], start, end]
+                                   'species', 100*round(c[1],2), start, end]
             
             # Write result string to file
             with open(FILE_PATH, 'a', newline='') as out_csv:
