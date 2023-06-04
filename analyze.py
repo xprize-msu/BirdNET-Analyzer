@@ -191,13 +191,14 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
                                    'species', 100*round(c[1],2), start, end]
             
             # Write result string to file
-            with open(FILE_PATH, 'a', newline='') as out_csv:
-                out_csv_append = csv.writer(out_csv)
-                out_csv_append.writerow([event_dir,afile_path,'audio_trap','NA','NA',
-                                         'MachineObservation','BirdNet','BirdNet',
-                                         'NA','NA','NA',
-                                         'NA','NA','NA',
-                                         'NA','NA'] + result_list)
+            if result_list:
+                with open(FILE_PATH, 'a', newline='') as out_csv:
+                    out_csv_append = csv.writer(out_csv)
+                    out_csv_append.writerow([event_dir,afile_path,'audio_trap','NA','NA',
+                                            'MachineObservation','BirdNet','BirdNet',
+                                            'NA','NA','NA',
+                                            'NA','NA','NA',
+                                            'NA','NA'] + result_list)
 
         return
     
