@@ -540,9 +540,7 @@ if __name__ == "__main__":
     # We have to do this for Windows which does not
     # support fork() and thus each process has to
     # have its own config. USE LINUX!
-    # Also, ignore those pesky Mac system files
-    # if running on Linux (hey, USE LINUX!)
-    flist = [(f, cfg.getConfig()) for f in cfg.FILE_LIST if not f.startswith(".")]
+    flist = [(f, cfg.getConfig()) for f in cfg.FILE_LIST]
 
     # Analyze files
     if cfg.CPU_THREADS < 2:

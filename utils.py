@@ -20,8 +20,14 @@ def collect_audio_files(path: str):
 
     for root, _, flist in os.walk(path):
         for f in flist:
-            if f.rsplit(".", 1)[-1].lower() in cfg.ALLOWED_FILETYPES:
-                files.append(os.path.join(root, f))
+
+            path = os.path.join(root, f)
+
+            # Ignore those pesky Mac system files when on Linux
+            # and also sometimes a file is just empty I guess
+            if f.rsplit(".", 1)[-1].lower() in cfg.ALLOWED_FILETYPES \
+            and not f.startswith(".") and os.path.getsize(path) > 0:
+                files.append(path)
 
     return sorted(files)
 
