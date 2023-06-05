@@ -170,7 +170,7 @@ def saveResultFile(r: dict[str, list], path: str, afile_path: str):
             out_csv_write.writerow(
                     ["sampling_event_id", "obs_file_path", "team","inat_code","preparations",
                      "collection_method","identification_method","aiml_name",
-                     "verification_method","verification_name","occurence_remarks",
+                     "verification_method","verification_name","occurrence_remarks",
                      "individual_count","organism_quantity","organism_quantity_type",
                      "references","notes",
                      "kingdom","phylum","class","order","family","genus","species","scientific_name",
